@@ -20,22 +20,4 @@ jobs:
       id: python-script
       run: docker run python:3.8 python my_script.py # Reference the Python image from Docker Hub
 
-    - name: Check Python script exit code
-      if: steps.python-script.outcome != 'success'
-      run: |
-        echo "The Python script encountered an error or failed to run." > error.log
-        cat error.log
-        echo "Sending an email notification..."
-        echo "::set-output name=error_message::$(cat error.log)"
-
-    - name: Send email on failure
-      if: steps.python-script.outcome != 'success'
-      uses: somakaushik98/test
-      with:
-        to: your-email@example.com  # Replace with your email address
-        subject: GitHub Actions Workflow Failed
-        body: |
-          The GitHub Actions workflow encountered an error when running the Python script.
-
-          Error Message:
-          ${{ steps.check-python-script-output.outputs.error_message }}
+    
