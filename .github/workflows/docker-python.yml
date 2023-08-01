@@ -1,4 +1,4 @@
-name: Docker Python Workflow
+name: Python Script Execution
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
       if: steps.python-script.outcome != 'success'
       uses: somakaushik98/test
       with:
-        to: somakaushik98@gmail.com  # Replace with your email address
+        to: your-email@example.com  # Replace with your email address
         subject: GitHub Actions Workflow Failed
         body: |
           The GitHub Actions workflow encountered an error when running the Python script.
