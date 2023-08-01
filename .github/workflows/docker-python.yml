@@ -18,6 +18,6 @@ jobs:
 
     - name: Run Python script inside Docker container
       id: python-script
-      run: docker run python:3.8 python my_script.py # Reference the Python image from Docker Hub
+      run: docker run python:3.8 python ./my_script.py # Reference the Python image from Docker Hub
 
     
