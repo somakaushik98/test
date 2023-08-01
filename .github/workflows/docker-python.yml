@@ -30,7 +30,7 @@ jobs:
 
     - name: Send email on failure
       if: steps.python-script.outcome != 'success'
-      uses: somakaushik98/send-email-action@v2
+      uses: somakaushik98/test
       with:
         to: somakaushik98@gmail.com  # Replace with your email address
         subject: GitHub Actions Workflow Failed
