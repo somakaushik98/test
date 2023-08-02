@@ -1,7 +1,7 @@
 # my_script.py - A simple Python script for testing GitHub Actions
 
 def main():
-    print("Hello, world!")
+    print("Hello, world!"
     result = add_numbers(5, 10)
     print("The result of adding 5 and 10 is:", result)
 
