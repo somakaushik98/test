@@ -26,4 +26,4 @@ jobs:
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
           echo "The Python script failed to execute. Here is the error message:"
-          cat error.log | mail -s "GitHub Action - Script Failure" -a "From: $GMAIL_USERNAME" ssoma@ucsd.edu
+          cat error.log | mail -s "GitHub Action - Script Failure" -a "From: $GMAIL_USERNAME" somasaikaushik@gmail.com
