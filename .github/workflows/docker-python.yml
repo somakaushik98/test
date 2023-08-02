@@ -20,7 +20,6 @@ jobs:
           args: sh -c "python script.py 2> error.log || true"
 
       - name: Send email on failure
-        if: ${{ failure() }}
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
