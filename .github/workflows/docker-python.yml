@@ -20,9 +20,10 @@ jobs:
           args: sh -c "python script.py 2> error.log || true"
 
       - name: Send email on failure
+        if: ${{ failure() }}
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
           echo "The Python script failed to execute. Here is the error message:"
-          cat error.log | mail -s "GitHub Action - Script Failure" -a "From: $GMAIL_USERNAME" somasaikaushik@gmail.com
+          cat error.log | docker run -i --rm linuxserver/docker-mods mail -s "GitHub Action - Script Failure" somasaikaushik@gmail.com
