@@ -18,21 +18,20 @@ jobs:
 
       - name: Run Python script in Docker container
         id: run_python
-        run: |
-          output=$(docker run --rm custom-python-image python script.py)
-          echo "$output" > python_output.txt
-          echo "Python script output: $output"  # This will be logged in the GitHub Actions output
-          echo "The Python script completed. Here is the output:" | mail -s "GitHub Action - Python Output" somasaikaushik@gmail.com < python_output.txt
+        run: docker run --rm custom-python-image python script.py > output.log || true
 
-  send_email_on_failure:
-    needs: run_script
-    runs-on: ubuntu-latest
-    if: ${{ needs.run_script.result == 'failure' }}
-    steps:
-      - name: Send email on failure
+      - name: Read output from the log file
+        id: read_output
+        run: |
+          echo "Output from the Python script:"
+          cat output.log
+          cp output.log send_email_output.log  # Copy the output to another file to use in send_email.py
+
+      - name: Send email on failure or success
+        if: always()
         env:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
-          echo "The Python script failed to execute. Here is the error message:"
-          cat error.log | mail -s "GitHub Action - Script Failure" somasaikaushik@gmail.com
+          echo "Sending email with Python script output."
+          python send_email.py < send_email_output.log
