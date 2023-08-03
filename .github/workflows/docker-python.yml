@@ -16,9 +16,23 @@ jobs:
       - name: Build the custom Docker image
         run: docker build -t custom-python-image -f test.dockerfile .
 
+      - name: Log in to Docker Hub (if you want to push the image)
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Copy service account file from GitHub secrets
+        run: |
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" > service_account.json
+        if: secrets.SERVICE_ACCOUNT_JSON
+
+      # OR, if using interactive authentication with credentials.json:
+      # - name: Copy credentials file from GitHub secrets
+      #   run: |
+      #     echo "${{ secrets.CREDENTIALS_JSON }}" > credentials.json
+      #   if: secrets.CREDENTIALS_JSON
+
       - name: Run Python script in Docker container
         id: run_python
-        run: docker run --rm custom-python-image python script.py > output.log || true
+        run: docker run --rm -v $PWD:/app custom-python-image python script.py > output.log || true
 
       - name: Read output from the log file
         id: read_output
@@ -35,3 +49,9 @@ jobs:
         run: |
           echo "Sending email with Python script output."
           python send_email.py < send_email_output.log
+
+      - name: Push the custom Docker image to Docker Hub (optional)
+        run: |
+          docker tag custom-python-image your-docker-username/custom-python-image:latest
+          docker push your-docker-username/custom-python-image:latest
+        if: always()
