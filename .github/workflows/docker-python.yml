@@ -13,17 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run Python script in Docker container
-        id: run_python
-        uses: docker://python:3
-        with:
-          args: sh -c "python script.py 2> error.log || true"
+      - name: Set up Docker
+        uses: docker/setup-docker@v1
 
-      - name: Send email on failure
-        if: ${{ failure() }}
-        env:
-          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-        run: |
-          echo "The Python script failed to execute. Here is the error message:"
-          cat error.log | docker run -i --rm linuxserver/docker-mods mail -s "GitHub Action - Script Failure" somasaikaushik@gmail.com
+      - name: Build the custom Docker image
+        run: docker build -t custom-python-image .
+
+      - name: Run Python script in Docker container
+        run: docker run --rm custom-python-image python script.py
