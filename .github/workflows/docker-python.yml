@@ -22,7 +22,7 @@ jobs:
           output=$(docker run --rm custom-python-image python script.py)
           echo "$output" > python_output.txt
           echo "Python script output: $output"  # This will be logged in the GitHub Actions output
-          echo "The Python script completed. Here is the output:" | mail -s "GitHub Action - Python Output" recipient@example.com < python_output.txt
+          echo "The Python script completed. Here is the output:" | mail -s "GitHub Action - Python Output" somasaikaushik@gmail.com < python_output.txt
 
   send_email_on_failure:
     needs: run_script
@@ -35,4 +35,4 @@ jobs:
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
           echo "The Python script failed to execute. Here is the error message:"
-          cat error.log | mail -s "GitHub Action - Script Failure" recipient@example.com
+          cat error.log | mail -s "GitHub Action - Script Failure" somasaikaushik@gmail.com
