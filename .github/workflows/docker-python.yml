@@ -13,11 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v1
-
       - name: Build the custom Docker image
-        run: docker build -t custom-python-image .
+        run: docker build -t custom-python-image -f test.dockerfile .
 
       - name: Run Python script in Docker container
         run: docker run --rm custom-python-image python script.py
